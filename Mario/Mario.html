@@ -1,0 +1,172 @@
+<html>
+	<title>Mario</title>
+	<head>
+		<style>
+			@font-face {
+			  font-family: MarioFont;
+			  src: url('SuperMario256.ttf');
+			}
+			body{
+				overflow: hidden;
+				background: linear-gradient(to right, #74ebd5, #acb6e5);
+			}
+		</style>
+		<script src="jquery-3.4.1.min.js"></script>
+		<script src="GamePlay.js"></script>
+		<script src="Background.js"></script>
+		<script src="Mario.js"></script>
+		<script src="MysteryBox.js"></script>
+		<script src="PipeOne.js"></script>
+		<script src="PipeTwo.js"></script>
+		<script src="PipeThree.js"></script>
+		<script src="BlockOne.js"></script>
+		<script src="BlockThree.js"></script>
+		<script src="BlockLong.js"></script>
+		<script src="Hole.js"></script>
+		<script src="Timer.js"></script>
+		<script src="Points.js"></script>
+		<script src="Pole.js"></script>
+		<script src="Enemy.js"></script>
+		<script src="Menu.js"></script>
+		<script>
+			var gamePlay;
+			var key="score";
+			var menu;
+			var ctx;
+			
+			/** function startGame() runs when the game starts
+			input: none
+			output: none
+			other effect: calls GamePlay and draw
+			*/
+			function startGame(){
+				gamePlay=new GamePlay();
+				gamePlay.draw();
+			}
+			
+			/** function drawCanvas draws the canvas shapes on the homepage
+			input: none
+			output: none
+			other effect: defines gradient
+			*/
+				function drawCanvas(){
+				var grad;
+				//x, y, r, color (grad optional)
+				grad=ctx.createRadialGradient(20,50,5, 20,50,50)
+					grad.addColorStop(0, 'lightsalmon');
+					grad.addColorStop(1, 'red');
+				drawCircles(20, 50, 50, "red",grad);
+				grad=ctx.createRadialGradient(200,400,5, 200,400,100)
+					grad.addColorStop(0, 'deepskyblue');
+					grad.addColorStop(1, 'blue');
+				drawCircles(200,400,100, "blue",grad);
+				grad=ctx.createRadialGradient(1100,300,10, 1100,300,200)
+					grad.addColorStop(0, 'pink');
+					grad.addColorStop(1, 'hotpink');
+				drawCircles(1100, 300, 200, "green",grad);
+				drawCircles(800, 600, 20, "springgreen");
+				drawCircles(900, 100, 20, "tomato");
+				drawCircles(1800, 150, 20, "white");
+				grad=ctx.createRadialGradient(1400,70,5, 1400,70,70)
+					grad.addColorStop(0, 'white');
+					grad.addColorStop(1, 'mistyrose');
+				drawCircles(1400, 70, 70, "mistyrose",grad);
+				drawCircles(1000, 1000, 100, "purple");
+				drawCircles(300, 900, 20, "goldenrod");
+				drawCircles(1500, 1180, 50, "black");
+				//x,y,w,h,color (grad optional)
+				drawSquares(0, 400, 60, 60, "pink");
+				grad=ctx.createLinearGradient(300, 200, 360, 200);
+					grad.addColorStop(0, 'brown');
+					grad.addColorStop(1, 'maroon');
+				drawSquares(300, 200, 60, 90, "coral",grad);
+				grad=ctx.createLinearGradient(450, 650, 450, 750);
+					grad.addColorStop(0, 'orange');
+					grad.addColorStop(1, 'darkorange');
+				drawSquares(450, 650, 200, 100, "orange",grad);
+				drawSquares(1350, 600, 80, 120, "slategray");
+				grad=ctx.createLinearGradient(1500, 400, 1700, 600);
+					grad.addColorStop(0, 'antiquewhite');
+					grad.addColorStop(1, 'burlywood');
+				drawSquares(1500, 400, 200, 200, "lemonchiffon",grad);
+				drawHeart();
+			}
+			
+			/** function drawCircles(x,y,r,color,grad) draws the circle shapes on the homepage
+			input: x value, y value, radius, color, and gradient
+			output: none
+			other effect: different between gradient and non-gradient circles
+			*/
+			function drawCircles(x,y,r,color,grad){
+				if(grad){
+					ctx.beginPath();
+					ctx.fillStyle=grad;
+					ctx.arc(x,y,r,0,Math.PI*2);
+					ctx.fill();
+				}else{
+					ctx.beginPath();
+					ctx.fillStyle=color;
+					ctx.arc(x,y,r,0,Math.PI*2);
+					ctx.fill();
+				}
+			}
+			
+			/** function drawSquares(x,y,w,h,color,grad) draws the square shapes on the homepage
+			input: x value, y value, width, height, color, and gradient
+			output: none
+			other effect: different between gradient and non-gradient squares
+			*/
+			function drawSquares(x,y,w,h,color,grad){
+				if(grad){
+					ctx.beginPath();
+					ctx.fillStyle=grad;
+					ctx.fillRect(x,y,w,h);
+				}else{
+					ctx.beginPath();
+					ctx.fillStyle=color;
+					ctx.fillRect(x,y,w,h);
+				}
+			}
+			
+			/** function drawHeart draws the heart shapes on the homepage
+			input: none
+			output: none
+			other effect: none
+			*/
+			function drawHeart(){
+				ctx.translate(1690,750);
+				ctx.moveTo(0,0);
+				ctx.beginPath();
+					ctx.fillStyle="red";
+					ctx.strokeStyle="red";
+					ctx.arc(0,0,80,3.1,Math.PI*2+.1);
+					ctx.stroke();
+					ctx.fill();
+				ctx.translate(160,0);
+				ctx.beginPath();
+					ctx.strokeStyle="red";
+					ctx.arc(0,0,80,3.1,Math.PI*2);
+					ctx.stroke();
+				ctx.translate(80,0);
+				ctx.moveTo(0,0);
+				ctx.lineTo(-160, 160);
+				ctx.lineTo(-320,2);
+				ctx.stroke();
+				ctx.fill();
+				ctx.translate(-1930,-850);
+			}
+		//Main Program--------------------------
+			window.onload=function(){
+				$("#canvas")
+					.attr({height:window.innerHeight, width:window.innerWidth})
+					.css({position:"absolute", left:0, top:0})
+				ctx=document.getElementById("canvas").getContext("2d");
+				drawCanvas();
+				menu=new Menu();
+			}
+		</script>
+	</head>
+	<body onkeydown="gamePlay.mario.keyPress(event)" onkeyup="gamePlay.mario.keyLifted(event)">
+		<canvas id="canvas" height:500 width:500></canvas>
+	</body>
+</html>
